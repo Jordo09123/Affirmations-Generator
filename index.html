@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Affirmation Generator</title>
+        <style>
+
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 100px;
+                background-color: #1e1e1e;
+                color: #f0f0f0;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            #affirmation {
+                margin-top: 20px;
+                font-size: 20px;
+                color: #ffcc00;
+            }   
+
+            #counter {
+                margin-top: 10px;
+                font-size: 16px;
+                color: #99ee90;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Random Affirmation to feel better !!! </h1>
+        <button id="genBtn">Get Affirmation</button>
+        <p id="affirmation">Click the button to get your affirmation!</p>
+        <p id="counter">Affirmations so far: 0</p>
+
+        <script>
+
+            let affirmations = [];
+            let count = 0; // track affirmations
+
+            // load affirmation from json
+            async function loadAffirmations() {
+                const res = await fetch("affirmations.json");
+                const data = await res.json();
+                affirmations = data.affirmations;
+            }
+
+            // pick random affirmation
+            function getRandomAffirmation() {
+                const randomIndex = Math.floor(Math.random() * affirmations.length);
+                return affirmations[randomIndex];
+            }
+
+            function showAffirmation() {
+                const affirmation = getRandomAffirmation();
+                document.getElementById("affirmation").innerText = affirmation;
+
+                count++;
+                document.getElementById("counter").innerText = "Affirmations so far: " + count;
+            }
+
+            document.getElementById("genBtn").addEventListener("click", showAffirmation);
+
+            // load affirmations on page load
+            loadAffirmations().then(showAffirmation); 
+        </script>
+    </body>
+</html>
